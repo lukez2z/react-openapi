@@ -1,0 +1,24 @@
+{
+    "login": {
+        "username": "用户名",
+        "password": "密码",
+        "rememberMe": "记住我",
+        "login": "登陆",
+        "setLang": "设置语言"
+    },
+    "dashboard": {
+        "title": "标题",
+        "userManagment": "用户管理"
+    },
+    "system": {
+        "createUser": {
+            "title": "创建一个系统用户",
+            "step1Title": "基本信息",
+            "step2Title": "可选信息"
+        }
+    },
+    "kb": {
+        "pathname": "URL路径名",
+        "createKB": "创建一个新的文档"
+    }
+}
