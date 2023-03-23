@@ -36,7 +36,6 @@ export const openAiApi = createApi({
             query: () => `models`,
             transformResponse: (response: { data: any }, meta, arg) => response.data,
         }),
-
     }),
 })
 

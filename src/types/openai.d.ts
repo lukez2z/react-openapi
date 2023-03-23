@@ -6,3 +6,9 @@ export interface OpenAIModelData {
     parent?: string;
     root: string;
 }
+
+
+export interface OpenAIState {
+    models: OpenAIModelData[];
+    chatDefaultModel: string;
+}

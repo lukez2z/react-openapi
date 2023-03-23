@@ -13,7 +13,7 @@ import {
     GithubFilled,
     InfoCircleFilled,
     PlusCircleFilled,
-    QuestionCircleFilled,
+    SettingOutlined,
     SearchOutlined,
     NotificationOutlined
 } from '@ant-design/icons';
@@ -180,13 +180,13 @@ export const MainLayout: React.FC<IProps> = (props) => {
                 actionsRender={(props) => {
                     if (props.isMobile) return [];
                     return [
-                        props.layout !== 'side' && document.body.clientWidth > 1400 ? (
+                        props.layout !== 'side' && document.body.clientWidth > 900 ? (
                             <SearchInput />
                         ) : undefined,
                         // <InfoCircleFilled key="InfoCircleFilled" />,
                         // <QuestionCircleFilled key="QuestionCircleFilled" />,
                         // <GithubFilled key="GithubFilled" />,
-                        <NotificationOutlined />,
+                        <SettingOutlined style={{ marginRight: 20 }} onClick={() => navigate('/setting')} />,
                         // <ConfigMenu />,
                         // <ThemeSwitcher />
                     ];

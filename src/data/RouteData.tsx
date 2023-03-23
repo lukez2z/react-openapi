@@ -1,5 +1,5 @@
 import {
-    WechatOutlined,
+    MessageOutlined,
 } from "@ant-design/icons";
 
 export interface ISiteItem {
@@ -26,7 +26,7 @@ const siteRoutes: ISiteRoute = {
     routes: [
         {
             name: "Chat",
-            icon: <WechatOutlined />,
+            icon: <MessageOutlined />,
             locale: "menu.Chat",
             path: "/chat",
             hideInMenu: false,

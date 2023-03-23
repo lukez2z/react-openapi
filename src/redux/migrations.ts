@@ -1,6 +1,6 @@
 
 export const migrations = {
-    0.2: (state: any) => {
+    0.21: (state: any) => {
         // migration to keep only device state
         console.log('Migration Running!')
         return {
@@ -9,6 +9,10 @@ export const migrations = {
                 remember: true,
                 apiKey: "",
                 theme: "dark"
+            },
+            openai: {
+                models: [],
+                chatDefaultModel: ""
             }
         }
     },

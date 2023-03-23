@@ -1,11 +1,12 @@
 import { useDispatch } from 'react-redux';
 import { setConfig } from '@/redux/reducers/configSlice';
 import useCurrentConfig from '@/hooks/useCurrentConfig';
-import { Layout, Button, App, Card, Form, Input, Row, Col, List, Space, Tag, Radio } from "antd";
+import { Layout, Button, App, Card, Form, Input, Row, Col, List, Space, Tag, Select } from "antd";
 import { useTranslation } from "react-i18next";
 import { namespaces } from '@/i18n/i18n.constants';
 import { useGetModelListMutation } from '@/services/openai';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { setChatModel } from "@/redux/reducers/openaiSlice";
 
 
 interface ModelType {
@@ -102,6 +103,15 @@ export const APIKeySetting = () => {
         }
     }, [error])
 
+    const [modelSelectData, setModelSelectData] = useState(data ? data : [])
+
+
+    useEffect(() => {
+        if (data) {
+            setModelSelectData(data)
+        }
+    }, [isSuccess])
+
 
     return (
         <Layout
@@ -178,11 +188,27 @@ export const APIKeySetting = () => {
 
                         {
                             isSuccess && (!error) ?
-                                <Radio.Group >
-                                    {
-                                        data?.map(item => <Radio value={item.id}>{item.id}</Radio>)
+                                <Select
+                                    showSearch
+                                    placeholder="Select a model"
+                                    optionFilterProp="children"
+                                    onChange={(value) => {
+                                        dispatch(setChatModel(value as string))
                                     }
-                                </Radio.Group>
+                                    }
+                                    // onSearch={onSearch}
+                                    style={{ width: 250 }}
+                                    filterOption={(input, option) =>
+                                        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                                    }
+                                    options={modelSelectData?.map((model) => {
+                                        return {
+                                            label: model.id,
+                                            value: model.id
+                                        }
+                                    })
+                                    }
+                                />
                                 : null
                         }
                     </Card>
