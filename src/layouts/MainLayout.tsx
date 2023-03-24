@@ -19,6 +19,7 @@ import {
 } from '@ant-design/icons';
 import ConfigMenu from "./components/ConfigSetting";
 import { SiteDefaultData } from "@/data/SiteData";
+import useStyles from './style';
 
 
 interface IProps {
@@ -30,6 +31,7 @@ interface IProps {
 
 const SearchInput = () => {
     const { token } = theme.useToken();
+
     return (
         <div
             key="SearchOutlined"
@@ -111,9 +113,7 @@ export const MainLayout: React.FC<IProps> = (props) => {
     return (
         <div
             id="main-layout"
-            style={{
-                height: "100vh",
-            }}
+            
         >
             <ProLayout
                 title={SiteDefaultData.siteName.toUpperCase()}

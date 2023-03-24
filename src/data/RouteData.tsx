@@ -1,5 +1,7 @@
 import {
     MessageOutlined,
+    HomeOutlined,
+    FilePdfFilled
 } from "@ant-design/icons";
 
 export interface ISiteItem {
@@ -25,10 +27,24 @@ const siteRoutes: ISiteRoute = {
     path: "/",
     routes: [
         {
+            name: "Home",
+            icon: <HomeOutlined />,
+            locale: "menu.Home",
+            path: "/home",
+            hideInMenu: false,
+        },
+        {
             name: "Chat",
             icon: <MessageOutlined />,
             locale: "menu.Chat",
             path: "/chat",
+            hideInMenu: false,
+        },
+        {
+            name: "PDFChat",
+            icon: <FilePdfFilled />,
+            locale: "menu.Chat",
+            path: "/pdfchat",
             hideInMenu: false,
         }
     ],

@@ -31,33 +31,10 @@ export const Home = () => {
 
 
     return (
-        <div className={styles.layout}>
-            <div className={styles.container}>
-                <div className={styles.searchBox}>
-                    <div className={styles.placeholder}>Trigger Macro by Name</div>
-
-                    <SearchOutlined />
+        <div >
+            <div >
+                testing
                 </div>
-                <div className={styles.menuContainer}>
-                    {items.map(({ label, shortcut }) => {
-                        return (
-                            <div
-                                className={cx(styles.menuItem, hover === label ? styles.menuItemHover : '')}
-                                key={label}
-                                onMouseEnter={() => {
-                                    setHover(label);
-                                }}
-                            >
-                                <div>{label}</div>
-                                <div>{shortcut}</div>
-                            </div>
-                        );
-                    })}
-                </div>
-
-                <div className="gradient-bg"></div>
-                <div className={styles.mask} />
-            </div>
         </div>
     );
 };
