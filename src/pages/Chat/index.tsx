@@ -1,5 +1,6 @@
 import React from 'react';
-import { Divider, List, Typography, Row, Col, Space } from 'antd';
+import { Divider, List, Typography, Row, Col, Space, Card } from 'antd';
+import { Flow } from './Flow';
 
 const data = [
     {
@@ -16,7 +17,7 @@ const data = [
 export const Chat: React.FC = () => (
     <Row justify="center">
         <Divider orientation="left">Default Size</Divider>
-        <Col span={16}>
+        <Col span={12}>
             <List
                 // header={<div>Header</div>}
                 // footer={<div>Footer</div>}
@@ -38,6 +39,11 @@ export const Chat: React.FC = () => (
                 }}
             />
 
+        </Col>
+        <Col span={12}>
+            <Card>
+                <Flow />
+            </Card>
         </Col>
     </Row >
 );

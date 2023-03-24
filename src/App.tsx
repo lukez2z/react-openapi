@@ -4,11 +4,11 @@ import { ConfigProvider, FloatButton, theme as antdTheme } from 'antd';
 import { SettingsContext } from '@/providers/Settings.provider'
 import ErrorBoundary from "./components/Error";
 import { MainLayout } from "./layouts/MainLayout"
-import { APIKeySetting, Chat } from './pages';
+import { APIKeySetting, Chat, Home } from './pages';
 import { FloatMenuButton } from './layouts/components/FloatMenu';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { App as AntdApp } from "antd";
-
+import { ThemeProvider } from 'antd-style';
 
 const App: FC = () => {
 
@@ -23,18 +23,20 @@ const App: FC = () => {
         components: componentsToken
       }}
     >
-      <ErrorBoundary>
-        <AntdApp>
-          <MainLayout>
-            <Routes>
-              <Route path="chat" element={<Chat />} />
-              <Route path="setting" element={<APIKeySetting />} />
-              <Route path="*" element={<Navigate to="/chat" />} />
-            </Routes>
-            <FloatMenuButton />
-          </MainLayout>
-        </AntdApp>
-      </ErrorBoundary>
+      <ThemeProvider>
+        <ErrorBoundary>
+          <AntdApp>
+            <MainLayout>
+              <Routes>
+                <Route path="chat" element={<Chat />} />
+                <Route path="setting" element={<APIKeySetting />} />
+                <Route path="*" element={<Home />} />
+              </Routes>
+              <FloatMenuButton />
+            </MainLayout>
+          </AntdApp>
+        </ErrorBoundary>
+      </ThemeProvider>
     </ConfigProvider>
   )
 }
