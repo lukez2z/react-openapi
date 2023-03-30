@@ -2,6 +2,7 @@
 import { createApi, fetchBaseQuery, BaseQueryFn, FetchArgs } from '@reduxjs/toolkit/query/react'
 import type { RootState } from '@/redux/store'
 import { OpenAIModelData } from '@/types/openai'
+import { CreateCompletionRequest, CreateCompletionResponse, ListModelsResponse, Model } from '@/types/openaiapi'
 
 interface CustomError {
     data: {
@@ -32,13 +33,19 @@ export const openAiApi = createApi({
         },
     }) as BaseQueryFn<string | FetchArgs, unknown, CustomError, {}>,
     endpoints: (builder) => ({
-        getModelList: builder.mutation<OpenAIModelData[], void>({
+        getModelList: builder.mutation<ListModelsResponse, void>({
             query: () => `models`,
-            transformResponse: (response: { data: any }, meta, arg) => response.data,
+        }),
+        createCompletion: builder.mutation<CreateCompletionResponse, CreateCompletionRequest>({
+            query: (body) => ({
+                url: `completions`,
+                method: 'POST',
+                body
+            }),
         }),
     }),
 })
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetModelListMutation } = openAiApi
+export const { useGetModelListMutation, useCreateCompletionMutation } = openAiApi

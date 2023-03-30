@@ -18,10 +18,18 @@ export const configSlice = createSlice({
             state = { ...action.payload }
             return state
         },
+        setApiKey: (state, action: PayloadAction<string>) => {
+            state.apiKey = action.payload
+            return state
+        },
+        delApiKey: (state) => {
+            state.apiKey = ""
+            return state
+        }
     },
 })
 
-export const { setConfig } = configSlice.actions
+export const { setConfig, delApiKey, setApiKey } = configSlice.actions
 
 
 // Other code such as selectors can use the imported `RootState` type

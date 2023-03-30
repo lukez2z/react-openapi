@@ -1,3 +1,6 @@
+import { Model } from "./openaiapi";
+
+
 export interface OpenAIModelData {
     created?: number;
     id: string;
@@ -9,6 +12,6 @@ export interface OpenAIModelData {
 
 
 export interface OpenAIState {
-    models: OpenAIModelData[];
+    models: Model[];
     chatDefaultModel: string;
 }

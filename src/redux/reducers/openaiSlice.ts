@@ -23,7 +23,7 @@ export const openaiSlice = createSlice({
     extraReducers: builder => {
         builder
             .addMatcher(openAiApi.endpoints.getModelList.matchFulfilled, (state, { payload }) => {
-                state.models = payload
+                state.models = payload.data
             })
     }
 })

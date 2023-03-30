@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { setConfig } from '@/redux/reducers/configSlice';
+import { delApiKey, setConfig } from '@/redux/reducers/configSlice';
 import useCurrentConfig from '@/hooks/useCurrentConfig';
 import { Layout, Button, App, Card, Form, Input, Row, Col, List, Space, Tag, Select } from "antd";
 import { useTranslation } from "react-i18next";
@@ -103,12 +103,12 @@ export const APIKeySetting = () => {
         }
     }, [error])
 
-    const [modelSelectData, setModelSelectData] = useState(data ? data : [])
+    const [modelSelectData, setModelSelectData] = useState(data ? data.data : [])
 
 
     useEffect(() => {
         if (data) {
-            setModelSelectData(data)
+            setModelSelectData(data.data)
         }
     }, [isSuccess])
 
@@ -155,9 +155,21 @@ export const APIKeySetting = () => {
                                 <Input.Password />
                             </Form.Item>
                             <Form.Item wrapperCol={{ span: 24 }}>
-                                <Button type="primary" htmlType="submit" size="small" >
-                                    {t('button.save')}
-                                </Button>
+                                <Space>
+                                    <Button type="primary" htmlType="submit" size="small" >
+                                        {t('button.save')}
+                                    </Button>
+                                    <Button type="default" danger size="small" onClick={() => {
+                                        dispatch(delApiKey())
+                                        notification.success({
+                                            message: 'API Key had been removed!',
+                                            placement: 'bottomRight'
+                                        })
+                                        form.resetFields()
+                                    }}>
+                                        {t('button.delete')}
+                                    </Button>
+                                </Space>
                             </Form.Item>
                         </Form>
                     </Card>
@@ -167,6 +179,10 @@ export const APIKeySetting = () => {
                         <List
                             itemLayout="horizontal"
                             dataSource={avaiableModels}
+                            style={{
+                                maxHeight: 400,
+                                overflow: 'auto'
+                            }}
                             renderItem={(item, index) => (
                                 <List.Item>
                                     <List.Item.Meta

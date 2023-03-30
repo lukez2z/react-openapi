@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { ProLayout } from "@ant-design/pro-layout";
+import { MenuDataItem, ProLayout } from "@ant-design/pro-layout";
 import siteRoutes from "@/data/RouteData";
 // import { ThemeContext } from "../providers/theme/Theme.provider";
 import type { ProSettings } from '@ant-design/pro-layout';
@@ -8,7 +8,7 @@ import { Route } from 'antd/lib/breadcrumb/Breadcrumb'
 import { useTranslation } from "react-i18next";
 import { namespaces } from "@/i18n/i18n.constants";
 import { LogoSvg } from "@/components/Icon";
-import { Input, theme, Badge } from 'antd';
+import { Input, theme, Typography } from 'antd';
 import {
     GithubFilled,
     InfoCircleFilled,
@@ -19,7 +19,6 @@ import {
 } from '@ant-design/icons';
 import ConfigMenu from "./components/ConfigSetting";
 import { SiteDefaultData } from "@/data/SiteData";
-import useStyles from './style';
 
 
 interface IProps {
@@ -27,7 +26,55 @@ interface IProps {
 }
 
 
+const { Text } = Typography;
 
+type MenuItemType = MenuDataItem & {
+    isUrl: boolean;
+    onClick: () => void;
+}
+
+const MenuItem = ({ item, dom }: { item: MenuItemType, dom: React.ReactNode }) => {
+
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [pathname, setPathname] = useState(location.pathname);
+    const { token } = theme.useToken();
+
+    const [isHover, setIsHover] = useState(false);
+
+    const handleMouseEnter = () => {
+        setIsHover(true);
+    };
+    const handleMouseLeave = () => {
+        setIsHover(false);
+    };
+
+
+    useEffect(() => {
+        setPathname(location.pathname);
+    }, [location]);
+
+    return (
+        <Text
+            onClick={() => {
+                setPathname(item.path || "/");
+                navigate(item.path as string, {
+                    state: { from: pathname },
+                });
+            }}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            style={{
+                lineHeight: "30px",
+                fontSize: "14px",
+                color: pathname === item.path || isHover ? token.colorLink : token.colorTextSecondary,
+                borderBottom: pathname === item.path || isHover ? `1px solid ${token.colorLink}` : 'none',
+            }}
+        >
+            {dom}
+        </Text>
+    )
+}
 
 const SearchInput = () => {
     const { token } = theme.useToken();
@@ -83,6 +130,7 @@ export const MainLayout: React.FC<IProps> = (props) => {
 
     const [route, setRoute] = useState(siteRoutes)
 
+
     useEffect(() => {
         let d = siteRoutes
         d.routes[0].name = t(`${d.routes[0].name}`)
@@ -102,6 +150,7 @@ export const MainLayout: React.FC<IProps> = (props) => {
 
     const [pathname, setPathname] = useState(location.pathname);
 
+    const { token } = theme.useToken();
 
     useEffect(() => {
         setPathname(location.pathname);
@@ -113,7 +162,7 @@ export const MainLayout: React.FC<IProps> = (props) => {
     return (
         <div
             id="main-layout"
-            
+
         >
             <ProLayout
                 title={SiteDefaultData.siteName.toUpperCase()}
@@ -149,17 +198,9 @@ export const MainLayout: React.FC<IProps> = (props) => {
                     collapsedShowTitle: false,
                 }}
                 menuItemRender={(item, dom) => (
-                    <a
-                        onClick={() => {
-                            setPathname(item.path || "/");
-                            navigate(item.path as string, {
-                                state: { from: pathname },
-                            });
-                        }}
-                    >
-                        {dom}
-                    </a>
-                )}
+                    <MenuItem item={item} dom={dom} />
+                )
+                }
                 // menuDataRender={(menuData) => {
                 //     menuData.map(item => {
                 //         if (item.children && item.children?.length > 0) {
@@ -194,7 +235,7 @@ export const MainLayout: React.FC<IProps> = (props) => {
             >
                 {/* <PageContainerWithHeader children={children} /> */}
                 {children}
-            </ProLayout>
+            </ProLayout >
             {/* <MainFooter /> */}
         </div >
 
