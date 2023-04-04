@@ -124,5 +124,12 @@ export const HomeToolData: HomeToolType[] = [
         link: "https://ttsmaker.com/",
         tags: ['Tool']
     },
+    {
+        id: 11,
+        title: "Online model",
+        content: "Online model for generating image from a given prompt.",
+        link: "https://replicate.com/",
+        tags: ['Image']
+    }
 
 ]

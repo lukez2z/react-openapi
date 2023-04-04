@@ -225,7 +225,7 @@ export const ChatBox = () => {
         createCompletion({
             model: 'text-davinci-003',
             prompt: question,
-            max_tokens: 100,
+            max_tokens: 2000,
             temperature: 0.9,
             top_p: 1,
             n: 1,
