@@ -162,12 +162,17 @@ export const MainLayout: React.FC<IProps> = (props) => {
     return (
         <div
             id="main-layout"
-
         >
             <ProLayout
                 title={SiteDefaultData.siteName.toUpperCase()}
                 // logo="https://github.githubassets.com/images/modules/logos_page/Octocat.png"
                 logo={<LogoSvg width={36} height={36} />}
+                token={{
+                    pageContainer: {
+                        paddingBlockPageContainerContent: 0,
+                        paddingInlinePageContainerContent: 20
+                    }
+                }}
                 location={{
                     pathname,
                 }}

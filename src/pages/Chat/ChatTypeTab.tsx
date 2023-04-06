@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Tabs, Row, Col, List, Popconfirm, Button } from 'antd';
+import { Tabs, Row, Col } from 'antd';
 import { ChatBox } from './ChatBox';
 import useChat from '@/hooks/useChat';
 import { TopicData, ChatData, ChatType } from '@/types/chat';
@@ -43,7 +43,7 @@ const TabContent = () => {
 
     return (
         <Row justify="start" gutter={[12, 12]}>
-            <Col span={6}>
+            {/* <Col span={6}>
                 <ProList
                     headerTitle="Topics"
                     dataSource={topics}
@@ -113,7 +113,7 @@ const TabContent = () => {
                         }
                     }}
                 />
-            </Col>
+            </Col> */}
             <Col span={14}>
                 <ChatBox />
             </Col>
@@ -131,7 +131,7 @@ export const ChatTab = () => {
         <div>
             <Tabs
                 defaultActiveKey="basic"
-                type="card"
+                // type="card"
                 size="large"
                 centered
                 onChange={(key: ChatType) => setCurrentChatType(key)}

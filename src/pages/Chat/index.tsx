@@ -2,8 +2,9 @@ import React from 'react';
 import { Divider, List, Typography, Row, Col, Space, Card, Avatar } from 'antd';
 import { Flow } from './Flow';
 import { UserOutlined } from '@ant-design/icons';
-import { ChatTab } from './ChatTab';
+import { ChatTab } from './ChatTypeTab';
 import ChatProvider from './Chat.provider';
+import { ChatContent } from './ChatContent';
 
 const data = [
     {
@@ -70,6 +71,6 @@ const ChatBoxAnswer = ({ answer }: { answer: string }) => {
 }
 export const Chat: React.FC = () => (
     <ChatProvider>
-        <ChatTab />
+        <ChatContent />
     </ChatProvider>
 );
