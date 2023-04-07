@@ -1,6 +1,6 @@
 import { createStyles, css } from 'antd-style';
 import { useState, KeyboardEvent, useRef, useEffect, useContext } from 'react';
-import { Input, Space, Button, App, Row, Col, Form, Empty } from 'antd';
+import { Input, Card, Button, App, Row, Col, Form, Empty } from 'antd';
 import { useCreateCompletionMutation } from '@/services/openai';
 import { Message } from './Message';
 import useCurrentConfig from '@/hooks/useCurrentConfig';
@@ -11,6 +11,8 @@ import useChat from '@/hooks/useChat';
 import { addMessage } from '@/redux/reducers/chatSlice';
 import { useDispatch } from 'react-redux';
 import { v4 as uuid4 } from 'uuid'
+import { SaveOutlined, ExportOutlined, DeleteOutlined } from '@ant-design/icons'
+import { ChatSendBtn } from './ChatSendBtn';
 
 const useStyles = createStyles(({ token }) => ({
     messages: css`
@@ -86,6 +88,45 @@ const useStyles = createStyles(({ token }) => ({
         &::placeholder {
             color: rgba(255, 255, 255, .5);
         }
+    `,
+    loading: css`
+    float: left;
+    width: 100%;
+    height: 100px;
+    margin: 0 5px 5px 0;
+    border-radius: 5px;
+    text-align: center;
+    .load-wrapp:last-child {
+        margin-right: 0;
+      }
+      .line {
+        display: inline-block;
+        width: 5px;
+        height: 5px;
+        border-radius: 5px;
+        margin: 0 2px;
+        background-color: ${token.colorText};
+      }
+      .circle .line:nth-last-child(1) {
+        animation: loadingA 0.8s 0.1s linear infinite;
+      }
+      .circle .line:nth-last-child(2) {
+        animation: loadingA 0.8s 0.2s linear infinite;
+      }
+      .circle .line:nth-last-child(3) {
+        animation: loadingA 0.8s 0.3s linear infinite;
+      }
+      @keyframes loadingA {
+        0 {
+          transform: translate(0, 0);
+        }
+        50% {
+          transform: translate(0, 6px);
+        }
+        100% {
+          transform: translate(0, 0);
+        }
+      }
     `
 }));
 
@@ -149,7 +190,7 @@ export const ChatBox = () => {
 
     const chatData = useChat()
 
-    const { currentChatType, currentTopicId, topicName } = useContext(ChatContext)
+    const { currentChatType, currentTopicId, currentTopicName } = useContext(ChatContext)
 
     const updateMessages = () => {
         const topics = chatData.data.find(chat => chat.type === currentChatType)?.topic
@@ -168,6 +209,16 @@ export const ChatBox = () => {
     const [question, setQuestion] = useState("")
 
     const [messageOverflown, setMessageOverflown] = useState(false)
+
+    // set the overflowY to auto if the message is overflown
+    useEffect(() => {
+        if (messageOverflown) return;
+        if (messageRef.current!.scrollHeight > messageRef.current!.clientHeight) {
+            messageRef.current!.style["overflowY"] = "auto";
+            setMessageOverflown(true)
+        }
+    }, [messageData])
+    
 
     const onEnterSendQuestion = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key !== 'Enter' || question === '') return
@@ -276,78 +327,74 @@ export const ChatBox = () => {
 
 
     return (
-        <Row justify="start" gutter={[6, 6]}>
-            <Col span={24}>
-                <h3>{topicName}</h3>
-            </Col>
-            <Col span={24}>
-                <div
-                    className={styles.messages}
-                    ref={messageRef}
-                    onAnimationEnd={() => {
-                        if (messageOverflown) return;
-                        if (messageRef.current!.scrollHeight > messageRef.current!.clientHeight) {
-                            messageRef.current!.style["overflowY"] = "auto";
-                            setMessageOverflown(true)
-                        }
-                    }}
-                    onResize={() => {
-                        if (messageRef.current!.scrollHeight > messageRef.current!.clientHeight) {
-                            messageRef.current!.style["overflowY"] = "auto";
-                            setMessageOverflown(true)
-                        } else setMessageOverflown(false)
-                    }}
-                >
-                    {
-                        messageData.length > 0 ?
-                            messageData.map((message, index) => (
-                                <div key={index} className={cx(styles.message, message.messageType === 'question' && "self", styles.animate)}>
-                                    <Message content={message.content} />
-                                </div>
-                            ))
-                            :
-                            <Empty />
-                    }
-                </div>
-            </Col>
-            {
-                apiKey === "" || !apiKey ?
-                    <Col>
-                        <APIKeySettingForm />
-                    </Col>
-                    :
-                    <>
-                        <Col span={20}>
-                            <Form.Item label="Prompt" extra="[Enter] for new line, [Shift+Enter] -> Send">
-                                <TextArea
-                                    showCount
-                                    maxLength={1000}
-                                    value={question}
-                                    autoSize={{ minRows: 2, maxRows: 10 }}
-                                    // onKeyUp={onEnterSendQuestion}
-                                    onChange={(e) => {
-                                        setQuestion(e.target.value)
-                                    }}
-                                    onKeyUp={(e) => {
-                                        if (e.key === 'Enter' && e.shiftKey) {
-                                            sendQuestion()
-                                        }
+        <Card
+            headStyle={{
+                textAlign: 'center',
+            }}
+            title={currentTopicName}
+            bordered={false}
+            // extra={[
+            //     <Button key="save" size='large' type="link" icon={<SaveOutlined />} />,
+            //     <Button key="export" size='large' type="link" icon={<ExportOutlined />} />,
+            //     <Button key="delete" size='large' type="link" icon={<DeleteOutlined />} danger />,
+            // ]}
+            >
+            <Row justify="start" gutter={[6, 6]}>
+                <Col span={24}>
+                    <div
+                        className={styles.messages}
+                        ref={messageRef}
+                        onAnimationEnd={() => {
+                            console.log(messageRef.current?.scrollHeight, messageRef.current?.clientHeight)
+                            if (messageOverflown) return;
+                            if (messageRef.current!.scrollHeight > messageRef.current!.clientHeight) {
+                                messageRef.current!.style["overflowY"] = "auto";
+                                setMessageOverflown(true)
+                            }
+                        }}
+                        onResize={() => {
+                            if (messageRef.current!.scrollHeight > messageRef.current!.clientHeight) {
+                                messageRef.current!.style["overflowY"] = "auto";
+                                setMessageOverflown(true)
+                            } else setMessageOverflown(false)
+                        }}
+                    >
+                        {
+                            messageData.length > 0 ?
+                                messageData.map((message, index) => {
+                                    let classname = cx(styles.message, message.messageType === 'question' && "self")
+                                    // if the message is a question and lastest one, add animation css
+                                    if (message.messageType === 'question' && index === messageData.length - 1) {
+                                        classname = cx(styles.message, message.messageType === 'question' && "self", styles.animate)
                                     }
-                                    }
-                                    placeholder='Your question..'
+                                    return (
+                                        <div key={index} className={classname}>
+                                            <Message content={message.content} />
+                                        </div>
+                                    )
 
-                                />
-                            </Form.Item>
-                        </Col>
-                        <Col>
-                            <Button
-                                loading={isLoading}
-                                disabled={question === ''}
-                                onClick={sendQuestion}
-                            >Send</Button>
-                        </Col>
-                    </>
-            }
-        </Row>
+                                })
+                                :
+                                <Empty />
+                        }
+                        {
+                            isLoading ?
+                                <div className={styles.message} style={{ width: 80, height: 40 }}>
+                                    <div className={styles.loading}>
+                                        <div className="circle">
+                                            <div className="line"></div>
+                                            <div className="line"></div>
+                                            <div className="line"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                :
+                                null
+                        }
+                    </div>
+                </Col>
+                <ChatSendBtn />
+            </Row>
+        </Card>
     );
 };

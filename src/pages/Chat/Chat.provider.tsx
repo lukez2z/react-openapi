@@ -1,6 +1,7 @@
 import React, { FC, createContext, useState, useEffect } from "react";
 import { ChatType, MessageData, TopicData } from "@/types/chat";
 import useChat from "@/hooks/useChat";
+import { OpenAiModels } from "@/data/SiteData";
 
 
 interface ISettingsContext {
@@ -8,8 +9,8 @@ interface ISettingsContext {
     setCurrentChatType: (name: ChatType) => any;
     currentTopicId: string;
     setCurrentTopicId: (id: string) => any;
-    topicName: string;
-
+    currentTopicName: string;
+    currentTopicModel: any;
 }
 
 type Props = {
@@ -23,7 +24,8 @@ export const ChatContext = createContext<ISettingsContext>({
     setCurrentChatType: (name: ChatType) => { },
     currentTopicId: '',
     setCurrentTopicId: (id: string) => { },
-    topicName: ''
+    currentTopicName: '',
+    currentTopicModel: null
 });
 
 const ChatProvider: FC<Props> = ({ children }) => {
@@ -41,7 +43,7 @@ const ChatProvider: FC<Props> = ({ children }) => {
     }
 
 
-    const findTopicName = () => {
+    const findcurrentTopicName = () => {
         const topics = chatData.data.find((chat) => chat.type === chatType)?.topic
         const topic: TopicData = topics?.find((topic) => topic.id === topicId.toString())
         if (topic && 'topic' in topic) {
@@ -51,9 +53,17 @@ const ChatProvider: FC<Props> = ({ children }) => {
         }
     }
 
-    const [topicName, setTopicName] = useState(
-        findTopicName()
+    const [currentTopicName, setCurrentTopicName] = useState(
+        findcurrentTopicName()
     )
+
+    const findcurrentTopicModel = () => { 
+        const topics = chatData.data.find((chat) => chat.type === chatType)?.topic
+        const topic: TopicData = topics?.find((topic) => topic.id === topicId.toString())
+        return OpenAiModels.find((model) => model.name === topic?.useModel)
+     }
+
+    const [currentTopicModel, setcurrentTopicModel] = useState(findcurrentTopicModel())
 
     useEffect(() => {
         const topics = chatData.data.find((chat) => chat.type === chatType)?.topic
@@ -65,14 +75,18 @@ const ChatProvider: FC<Props> = ({ children }) => {
     }, [chatType])
 
     useEffect(() => {
-        console.log(topicId)
         if (topicId) {
-            setTopicName(findTopicName())
+            setCurrentTopicName(findcurrentTopicName())
         } else {
-            setTopicName('default')
+            setCurrentTopicName('default')
         }
     }, [topicId, chatData.data])
 
+    useEffect(() => {
+        if (topicId) {
+            setcurrentTopicModel(findcurrentTopicModel())
+        } 
+    }, [topicId, chatData.data])
 
 
     return (
@@ -82,7 +96,8 @@ const ChatProvider: FC<Props> = ({ children }) => {
                 setCurrentChatType: setCurrentChatType,
                 currentTopicId: topicId,
                 setCurrentTopicId: setCurrentTopicId,
-                topicName: topicName
+                currentTopicName: currentTopicName,
+                currentTopicModel: currentTopicModel
             }}
         >
             {children}

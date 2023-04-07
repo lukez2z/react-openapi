@@ -133,3 +133,95 @@ export const HomeToolData: HomeToolType[] = [
     }
 
 ]
+
+
+interface ModelType {
+    name: string;
+    tag?: string;
+    desc: string;
+    model?: string;
+    maxTokens?: number;
+}
+
+export const OpenAiModels: ModelType[] = [
+    {
+        name: 'GPT-4',
+        tag: 'Limited beta',
+        desc: 'More capable than any GPT-3.5 model, able to do more complex tasks, and optimized for chat. Still in beta.	',
+        model: 'gpt-4',
+        maxTokens: 8192
+    },
+    {
+        name: 'GPT-4-32k',
+        tag: 'Limited beta',
+        desc: 'Same capabilities as the base gpt-4 mode but with 4x the context length.',
+        model: 'gpt-4-32k',
+        maxTokens: 32768
+    },
+    {
+        name: 'GPT-3.5-Turbo',
+        desc: 'A set of models that improve on GPT-3 and can understand as well as generate natural language or code',
+        model: 'gpt-3.5-turbo',
+        maxTokens: 4096
+
+    },
+    {
+        name: 'text-davinci-003',
+        desc: 'Can do any language task with better quality, longer output, and consistent instruction-following. Complex intent, cause and effect, summarization for audience',
+        model: 'text-davinci-003',
+        maxTokens: 4000
+
+    },
+    {
+        name: 'text-davinci-002',
+        desc: 'Similar capabilities to text-davinci-003 but trained with supervised fine-tuning instead of reinforcement learning.',
+        model: 'text-davinci-002',
+        maxTokens: 4000
+
+    },
+    {
+        name: 'Curie',
+        desc: 'Language translation, complex classification, text sentiment, summarization.',
+        model: 'text-curie-001',
+        maxTokens: 2048
+
+    },
+    {
+        name: 'Ada',
+        desc: 'Capable of very simple tasks, usually the fastest model in the GPT-3 series, and lowest cost.Parsing text, simple classification, address correction, keywords',
+        model: 'text-ada-001',
+        maxTokens: 2048
+
+    },
+    {
+        name: 'Babbage',
+        desc: 'Capable of straightforward tasks, very fast, and lower cost.',
+        model: 'text-babbage-001',
+        maxTokens: 2048
+
+    },
+    {
+        name: 'DALL·E',
+        tag: 'Beta',
+        desc: 'A model that can generate and edit images given a natural language prompt'
+    },
+    {
+        name: 'Whisper',
+        tag: 'Beta',
+        desc: 'A model that can convert audio into text'
+    },
+    {
+        name: 'Embeddings',
+        desc: 'A set of models that can convert text into a numerical form'
+    },
+    {
+        name: 'CodexLimited',
+        tag: 'Limited beta',
+        desc: 'A set of models that can understand and generate code, including translating natural language to code'
+    },
+    {
+        name: 'Moderation',
+        desc: 'A fine-tuned model that can detect whether text may be sensitive or unsafe'
+    }
+
+]

@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ant-design/pro-components": "^2.4.2",
+    "@ant-design/pro-components": "^2.4.3",
     "@lexical/markdown": "^0.9.1",
     "@lexical/react": "^0.9.1",
     "@reduxjs/toolkit": "^1.9.3",

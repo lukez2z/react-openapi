@@ -19,6 +19,7 @@ export interface TopicData {
     topic: string;
     chats: messageData[];
     description?: string;
+    useModel: string;
 }
 
 

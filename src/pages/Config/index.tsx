@@ -7,53 +7,9 @@ import { namespaces } from '@/i18n/i18n.constants';
 import { useGetModelListMutation } from '@/services/openai';
 import { useEffect, useState } from 'react';
 import { setChatModel } from "@/redux/reducers/openaiSlice";
+import { OpenAiModels } from '@/data/SiteData';
 
 
-interface ModelType {
-    name: string;
-    tag?: string;
-    desc: string;
-}
-
-const avaiableModels: ModelType[] = [
-    {
-        name: 'GPT-4',
-        tag: 'Limited beta',
-        desc: 'A set of models that improve on GPT-3.5 and can understand as well as generate natural language or code'
-    },
-    {
-        name: 'GPT-3.5',
-        desc: 'A set of models that improve on GPT-3 and can understand as well as generate natural language or code'
-    },
-    {
-        name: 'DALL·E',
-        tag: 'Beta',
-        desc: 'A model that can generate and edit images given a natural language prompt'
-    },
-    {
-        name: 'Whisper',
-        tag: 'Beta',
-        desc: 'A model that can convert audio into text'
-    },
-    {
-        name: 'Embeddings',
-        desc: 'A set of models that can convert text into a numerical form'
-    },
-    {
-        name: 'CodexLimited',
-        tag: 'Limited beta',
-        desc: 'A set of models that can understand and generate code, including translating natural language to code'
-    },
-    {
-        name: 'Moderation',
-        desc: 'A fine-tuned model that can detect whether text may be sensitive or unsafe'
-    },
-    {
-        name: 'GPT-3',
-        desc: 'A set of models that can understand and generate natural language'
-    }
-
-]
 
 
 export const APIKeySetting = () => {
@@ -175,12 +131,12 @@ export const APIKeySetting = () => {
                     </Card>
                 </Col>
                 <Col span={8}>
-                    <Card title="Avaiable Models">
+                    <Card title="Avaiable Models" >
                         <List
                             itemLayout="horizontal"
-                            dataSource={avaiableModels}
+                            dataSource={OpenAiModels}
                             style={{
-                                maxHeight: 400,
+                                height: '80vh',
                                 overflow: 'auto'
                             }}
                             renderItem={(item, index) => (

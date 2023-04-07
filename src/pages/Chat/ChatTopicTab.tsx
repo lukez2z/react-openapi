@@ -7,6 +7,7 @@ import {
     ModalForm,
     ProForm,
     ProFormText,
+    ProFormTextArea
 } from '@ant-design/pro-components';
 import type { ChatData } from '@/types/chat';
 import { v4 as uuid4 } from 'uuid'
@@ -14,7 +15,7 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { deleteChatTopic, editChatTopic, newChatTopic } from '@/redux/reducers/chatSlice';
 
 
-const { Text, Title } = Typography
+const { Text, Paragraph } = Typography
 
 const ChatTopicTitle = ({ topicId, topic, desc, setOpen }: { topicId: string, topic: string, desc?: string, setOpen: any }) => {
 
@@ -25,7 +26,6 @@ const ChatTopicTitle = ({ topicId, topic, desc, setOpen }: { topicId: string, to
 
     return (
         <Space>
-            <Text>{desc}</Text>
             <ModalForm<{
                 topic: string;
                 description?: string;
@@ -56,7 +56,8 @@ const ChatTopicTitle = ({ topicId, topic, desc, setOpen }: { topicId: string, to
                     setOpen(false)
                     return true;
                 }}
-                width={300}
+                width={400}
+                onValuesChange={(changeValues) => console.log(changeValues)}
             >
                 <ProForm.Group>
                     <ProFormText
@@ -65,7 +66,7 @@ const ChatTopicTitle = ({ topicId, topic, desc, setOpen }: { topicId: string, to
                         label="Topic Name"
                     />
 
-                    <ProFormText width="lg" name="description" label="Description" />
+                    <ProFormTextArea width="lg" name="description" label="Description" />
                 </ProForm.Group>
             </ModalForm>
             <Popconfirm
@@ -81,7 +82,7 @@ const ChatTopicTitle = ({ topicId, topic, desc, setOpen }: { topicId: string, to
                 cancelText="No"
                 key='delete'
                 disabled={topicId === '0'}
-                placement="right"
+                placement="bottom"
                 destroyTooltipOnHide
             >
                 <Button
@@ -101,7 +102,8 @@ const ChatTopicTabLabel = ({ topic, desc, topicId }: { topic: string, desc?: str
 
     return (
         <Popover
-            content={<ChatTopicTitle topicId={topicId} topic={topic} desc={desc} setOpen={setOpen} />}
+            title={<ChatTopicTitle topicId={topicId} topic={topic} desc={desc} setOpen={setOpen} />}
+            content={<Paragraph style={{ maxWidth: 300}}>{desc}</Paragraph>}
             trigger="hover"
             placement="right"
             destroyTooltipOnHide
@@ -118,7 +120,7 @@ const ChatTopicTabLabel = ({ topic, desc, topicId }: { topic: string, desc?: str
                 </Col>
                 {
                     desc && <Col span={24}>
-                        <Text ellipsis style={{ width: "90%" }} type="secondary">{desc}</Text>
+                        <Text type="secondary" ellipsis style={{ width: 200}}>{desc}</Text>
                     </Col>
                 }
             </Row>

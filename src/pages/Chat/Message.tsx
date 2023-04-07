@@ -7,7 +7,6 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import "katex/dist/katex.min.css";
 
-
 // @ts-ignore
 const Code = ({ node, inline, className, children, ...props }) => {
     const match = /language-(\w+)/.exec(className || '')
@@ -32,15 +31,15 @@ const Code = ({ node, inline, className, children, ...props }) => {
 export const Message = ({ content }: { content?: string }) => {
 
     return (
-        <ReactMarkdown
-            remarkPlugins={[RemarkMath, RemarkGfm]}
-            // rehypePlugins={[RehypeKatex, [RehypePrsim, { ignoreMissing: true }]]}
-            components={{
-                code: Code,
-                pre: Code
-            }}
-        >
-            {content ? content : ""}
-        </ReactMarkdown>
+            <ReactMarkdown
+                remarkPlugins={[RemarkMath, RemarkGfm]}
+                // rehypePlugins={[RehypeKatex, [RehypePrsim, { ignoreMissing: true }]]}
+                components={{
+                    code: Code,
+                    pre: Code
+                }}
+            >
+                {content ? content : ""}
+            </ReactMarkdown>
     );
 }

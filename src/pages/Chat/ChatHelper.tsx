@@ -11,6 +11,12 @@ import {
     Switch,
 } from 'antd';
 
+import { useContext, useEffect, useRef } from 'react';
+import { ChatContext } from './Chat.provider';
+import { OpenAiModels } from '@/data/SiteData';
+import type { FormInstance } from 'antd/es/form';
+
+
 const { Option } = Select;
 
 const formItemLayout = {
@@ -18,13 +24,6 @@ const formItemLayout = {
     wrapperCol: { span: 14 },
 };
 
-const normFile = (e: any) => {
-    console.log('Upload event:', e);
-    if (Array.isArray(e)) {
-        return e;
-    }
-    return e?.fileList;
-};
 
 const onFinish = (values: any) => {
     console.log('Received values of form: ', values);
@@ -32,12 +31,24 @@ const onFinish = (values: any) => {
 
 export const ChatHelper = () => {
 
+    const { currentTopicName, currentTopicModel } = useContext(ChatContext)
+
+    const formRef = useRef<FormInstance>(null);
+    
+    useEffect(() => {
+      if (formRef.current) {
+        formRef.current.setFieldsValue({ model: currentTopicModel?.name })
+      }
+    }, [currentTopicModel])
+    
+
     return (
         <Form
             name="validate_other"
             {...formItemLayout}
+            ref={formRef}
             onFinish={onFinish}
-            initialValues={{ model: 'gpt-3.5', 'token': 500 }}
+            initialValues={{ model: currentTopicModel?.name, stream: false, temperature: 50, token: 64}}
         >
             <Form.Item
                 name="model"
@@ -45,9 +56,12 @@ export const ChatHelper = () => {
                 hasFeedback
                 rules={[{ required: true, message: 'Please select your Model!' }]}
             >
-                <Select placeholder="Please select a country">
-                    <Option value="gpt-3.5">GPT3.5</Option>
-                    <Option value="gpt-4">GPT4</Option>
+                <Select placeholder="You can change below model for current topic">
+                    {
+                        OpenAiModels.map((model) => {
+                            return <Option key={model.name} value={model.model}>{model.name}</Option>
+                        })
+                    }
                 </Select>
             </Form.Item>
 

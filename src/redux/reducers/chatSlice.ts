@@ -1,6 +1,7 @@
 import { createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../store'
 import { ChatData, ChatState, ChatType, MessageData, TopicData } from '@/types/chat';
+import useModal from 'antd/es/modal/useModal';
 
 
 
@@ -11,19 +12,43 @@ const initChatData: ChatData[] = [
         topic: [{
             id: "0",
             topic: 'default',
-            description: 'default topic',
-            chats: []
-
+            decsription: 'Parsing text, simple classification, address correction, keywords',
+            chats: [],
+            useModel: 'Ada'
         }]
     },
     {
         id: 1,
+        type: "chat",
+        topic: [{
+            id: "0",
+            topic: 'default',
+            description: 'Can do any language task with better quality, longer output, and consistent instruction-following. Complex intent, cause and effect, summarization for audience',
+            chats: [],
+            useModel: 'text-davinci-003'
+        }]
+    },
+    {
+        id: 2,
         type: "code",
         topic: [{
             id: "0",
             topic: 'default',
-            description: 'default topic',
-            chats: []
+            description: 'Similar capabilities to text-davinci-003 but trained with supervised fine-tuning instead of reinforcement learning.',
+            chats: [],
+            useModel: 'text-davinci-002'
+
+        }]
+    },
+    {
+        id: 3,
+        type: "translation",
+        topic: [{
+            id: "0",
+            topic: 'default',
+            description: 'Language translation, complex classification, text sentiment, summarization.',
+            chats: [],
+            useModel: 'Curie'
 
         }]
     },
@@ -43,6 +68,8 @@ export const chatSlice = createSlice({
         },
         newChatTopic: (state, action: PayloadAction<{ chatType: ChatType, topic: TopicData }>) => {
             const { chatType, topic } = action.payload
+            const useModel = state.data.find(c => c.type === chatType)?.topic[0].useModel
+            topic.useModel = useModel
             const chat = state.data.find(c => c.type === chatType)
             if (chat) {
                 chat.topic.push(topic)

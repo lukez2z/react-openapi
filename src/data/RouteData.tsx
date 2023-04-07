@@ -34,7 +34,7 @@ const siteRoutes: ISiteRoute = {
             hideInMenu: false,
         },
         {
-            name: "Chat",
+            name: "GPTChat",
             icon: <MessageOutlined />,
             locale: "menu.Chat",
             path: "/chat",

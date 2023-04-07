@@ -14,7 +14,7 @@ export const ChatMain = () => {
                     <ChatTypeTab />
                 </Col>
             </Row>
-            <Row justify="space-between" gutter={[12, 12]}>
+            <Row justify="center" gutter={[12, 12]}>
                 <Col span={4}>
                     <ChatTopicTab />
                 </Col>
