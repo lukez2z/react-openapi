@@ -7,7 +7,7 @@ import { ChatData, ChatState, ChatType, MessageData, TopicData } from '@/types/c
 const initChatData: ChatData[] = [
     {
         id: 0,
-        type: "basic",
+        type: "q&a",
         topic: [{
             id: "0",
             topic: 'default',

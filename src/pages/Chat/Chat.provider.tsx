@@ -19,7 +19,7 @@ type Props = {
 
 
 export const ChatContext = createContext<ISettingsContext>({
-    currentChatType: 'basic',
+    currentChatType: 'q&a',
     setCurrentChatType: (name: ChatType) => { },
     currentTopicId: '',
     setCurrentTopicId: (id: string) => { },
@@ -30,7 +30,7 @@ const ChatProvider: FC<Props> = ({ children }) => {
 
     const chatData = useChat()
 
-    const [chatType, setChatType] = useState<ChatType>('basic')
+    const [chatType, setChatType] = useState<ChatType>('q&a')
     const setCurrentChatType = (name: ChatType) => {
         setChatType(name)
     }

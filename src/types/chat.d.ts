@@ -1,6 +1,6 @@
 import { CreateCompletionResponseUsage } from "./openaiapi"
 
-export type ChatType = 'basic' | 'code'
+export type ChatType = 'q&a' | 'code'
 
 export interface MessageData {
     id: string

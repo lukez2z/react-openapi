@@ -2,45 +2,21 @@ import useChat from '@/hooks/useChat';
 import { Tabs, Row, Col, Popover, Button, Space, Popconfirm, Form, Typography } from 'antd';
 import { useContext, useState } from 'react';
 import { ChatContext } from './Chat.provider';
-import { ChatBox } from './ChatBox';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { useDispatch } from 'react-redux';
-import { deleteChatTopic, editChatTopic, newChatTopic } from '@/redux/reducers/chatSlice';
 import {
     ModalForm,
     ProForm,
     ProFormText,
 } from '@ant-design/pro-components';
-import type { ChatData, ChatType } from '@/types/chat';
+import type { ChatData } from '@/types/chat';
 import { v4 as uuid4 } from 'uuid'
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import { deleteChatTopic, editChatTopic, newChatTopic } from '@/redux/reducers/chatSlice';
+
 
 const { Text, Title } = Typography
 
-const ChatTypeTab = () => {
-
-    const chatData = useChat()
-    const { setCurrentChatType } = useContext(ChatContext)
-
-    return (
-        <Tabs
-            defaultActiveKey="basic"
-            // type="card"
-            size="large"
-            centered
-            onChange={(key: ChatType) => setCurrentChatType(key)}
-            items={chatData.data.map((chat) => {
-                return {
-                    key: chat.type,
-                    label: chat.type,
-                    children: null
-                }
-            })
-            }
-        />
-    )
-}
-
-const TopicTitle = ({ topicId, topic, desc, setOpen }: { topicId: string, topic: string, desc?: string, setOpen: any }) => {
+const ChatTopicTitle = ({ topicId, topic, desc, setOpen }: { topicId: string, topic: string, desc?: string, setOpen: any }) => {
 
     const { currentChatType } = useContext(ChatContext)
 
@@ -118,14 +94,14 @@ const TopicTitle = ({ topicId, topic, desc, setOpen }: { topicId: string, topic:
     )
 }
 
-const TopicTabLabel = ({ topic, desc, topicId }: { topic: string, desc?: string, topicId: string }) => {
+const ChatTopicTabLabel = ({ topic, desc, topicId }: { topic: string, desc?: string, topicId: string }) => {
 
     const [open, setOpen] = useState(false)
 
 
     return (
         <Popover
-            title={<TopicTitle topicId={topicId} topic={topic} desc={desc} setOpen={setOpen} />}
+            content={<ChatTopicTitle topicId={topicId} topic={topic} desc={desc} setOpen={setOpen} />}
             trigger="hover"
             placement="right"
             destroyTooltipOnHide
@@ -151,7 +127,7 @@ const TopicTabLabel = ({ topic, desc, topicId }: { topic: string, desc?: string,
     )
 }
 
-const ChatTopicTab = () => {
+export const ChatTopicTab = () => {
     const { currentChatType, setCurrentTopicId, currentTopicId } = useContext(ChatContext)
     const topics = useChat().data.find((chat: ChatData) => chat.type === currentChatType)?.topic || []
 
@@ -175,7 +151,7 @@ const ChatTopicTab = () => {
                     items={topics.map((topic) => {
                         return {
                             key: topic.id,
-                            label: <TopicTabLabel topic={topic.topic} desc={topic.description} topicId={topic.id} />,
+                            label: <ChatTopicTabLabel topic={topic.topic} desc={topic.description} topicId={topic.id} />,
                             children: null
                         }
                     })
@@ -201,28 +177,5 @@ const ChatTopicTab = () => {
 
             </Col>
         </Row>
-    )
-}
-
-export const ChatContent = () => {
-
-
-    return (
-        <>
-            <Row>
-                <Col span={14} offset={4}>
-                    <ChatTypeTab />
-                </Col>
-            </Row>
-            <Row justify={"center"} gutter={[12, 12]}>
-                <Col span={4}>
-                    <ChatTopicTab />
-                </Col>
-                <Col span={14}>
-                    <ChatBox />
-                </Col>
-                <Col span={6}></Col>
-            </Row>
-        </>
     )
 }
