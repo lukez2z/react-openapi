@@ -1,10 +1,9 @@
 import { createStyles, css } from 'antd-style';
 import { useState, KeyboardEvent, useRef, useEffect, useContext } from 'react';
-import { Input, Card, Button, App, Row, Col, Form, Empty } from 'antd';
+import { Input, Card, Button, App, Row, Col, Empty } from 'antd';
 import { useCreateCompletionMutation } from '@/services/openai';
 import { Message } from './Message';
 import useCurrentConfig from '@/hooks/useCurrentConfig';
-import { APIKeySettingForm } from './APIKeySettingForm';
 import { MessageData } from '@/types/chat';
 import { ChatContext } from './Chat.provider';
 import useChat from '@/hooks/useChat';
@@ -12,7 +11,7 @@ import { addMessage } from '@/redux/reducers/chatSlice';
 import { useDispatch } from 'react-redux';
 import { v4 as uuid4 } from 'uuid'
 import { SaveOutlined, ExportOutlined, DeleteOutlined } from '@ant-design/icons'
-import { ChatSendBtn } from './ChatSendBtn';
+import { ChatPromptBtn } from './ChatSendBtn';
 
 const useStyles = createStyles(({ token }) => ({
     messages: css`
@@ -218,7 +217,7 @@ export const ChatBox = () => {
             setMessageOverflown(true)
         }
     }, [messageData])
-    
+
 
     const onEnterSendQuestion = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key !== 'Enter' || question === '') return
@@ -256,89 +255,24 @@ export const ChatBox = () => {
         messageRef.current?.scrollTo(0, messageRef.current.scrollHeight)
     }, [messageData])
 
-
-    const [createCompletion, { isError, isLoading, isSuccess, data, error }] = useCreateCompletionMutation()
-
-    const sendQuestion = () => {
-        if (question === '') return
-        // messageData.push({ text: question, self: true, animate: true })
-        setQuestion('')
-        dispatch(addMessage({
-            chatType: currentChatType,
-            topicId: currentTopicId,
-            message: {
-                id: uuid4(),
-                messageType: 'question',
-                content: question,
-            }
-        }))
-        // setMessageData([...messageData])
-        createCompletion({
-            model: 'text-davinci-003',
-            prompt: question,
-            max_tokens: 2000,
-            temperature: 0.9,
-            top_p: 1,
-            n: 1,
-            stream: false,
-            // stop: '\n',
-        })
-    }
-
-    useEffect(() => {
-        if (isSuccess && data) {
-            console.log(data)
-            // messageData.push({ text: data.choices[0].text, animate: true })
-            // setMessageData([...messageData])
-            dispatch(addMessage({
-                chatType: currentChatType,
-                topicId: currentTopicId,
-                message: {
-                    id: data.id,
-                    messageType: 'answer',
-                    content: data.choices[0].text,
-                    created: data.created,
-                    model: data.model,
-                    usage: data.usage,
-                }
-            }))
-            setQuestion('')
-        }
-    }, [isSuccess])
-
-    useEffect(() => {
-        if (isError && error) {
-            console.log(error)
-            if ('data' in error) {
-                const data = error.data
-                notification.error({
-                    message: data.error.message,
-                    placement: 'bottomRight'
-                })
-            }
-            if ('status' in error) {
-                notification.error({
-                    message: error.status,
-                    placement: 'bottomRight'
-                })
-            }
-        }
-    }, [isError])
-
+    const [isLoading, setLoading] = useState(false)
 
     return (
         <Card
             headStyle={{
                 textAlign: 'center',
             }}
+            bodyStyle={{
+                padding: 10,
+            }}
             title={currentTopicName}
             bordered={false}
-            // extra={[
-            //     <Button key="save" size='large' type="link" icon={<SaveOutlined />} />,
-            //     <Button key="export" size='large' type="link" icon={<ExportOutlined />} />,
-            //     <Button key="delete" size='large' type="link" icon={<DeleteOutlined />} danger />,
-            // ]}
-            >
+            extra={[
+                <Button key="save" size='large' type="link" icon={<SaveOutlined />} />,
+                <Button key="export" size='large' type="link" icon={<ExportOutlined />} />,
+                <Button key="delete" size='large' type="link" icon={<DeleteOutlined />} danger />,
+            ]}
+        >
             <Row justify="start" gutter={[6, 6]}>
                 <Col span={24}>
                     <div
@@ -393,7 +327,7 @@ export const ChatBox = () => {
                         }
                     </div>
                 </Col>
-                <ChatSendBtn />
+                <ChatPromptBtn setLoading={setLoading} />
             </Row>
         </Card>
     );

@@ -28,7 +28,7 @@ const App: FC = () => {
           <AntdApp>
             <MainLayout>
               <Routes>
-                <Route path="chat" element={<Chat />} />
+                <Route path="gpt/*" element={<Chat />} />
                 <Route path="setting" element={<APIKeySetting />} />
                 <Route path="*" element={<Home />} />
               </Routes>

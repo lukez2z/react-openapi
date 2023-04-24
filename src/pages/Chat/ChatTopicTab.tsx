@@ -103,7 +103,7 @@ const ChatTopicTabLabel = ({ topic, desc, topicId }: { topic: string, desc?: str
     return (
         <Popover
             title={<ChatTopicTitle topicId={topicId} topic={topic} desc={desc} setOpen={setOpen} />}
-            content={<Paragraph style={{ maxWidth: 300}}>{desc}</Paragraph>}
+            content={<Paragraph style={{ maxWidth: 300 }}>{desc}</Paragraph>}
             trigger="hover"
             placement="right"
             destroyTooltipOnHide
@@ -120,7 +120,7 @@ const ChatTopicTabLabel = ({ topic, desc, topicId }: { topic: string, desc?: str
                 </Col>
                 {
                     desc && <Col span={24}>
-                        <Text type="secondary" ellipsis style={{ width: 200}}>{desc}</Text>
+                        <Text type="secondary" ellipsis style={{ width: 170 }}>{desc}</Text>
                     </Col>
                 }
             </Row>
@@ -139,7 +139,6 @@ export const ChatTopicTab = () => {
         <Row
             justify={"center"}
             style={{
-                maxHeight: '90%',
                 overflowY: 'auto'
             }}
         >
@@ -164,12 +163,14 @@ export const ChatTopicTab = () => {
             <Col span={8}>
                 <Button onClick={() => {
                     const newId = uuid4()
+                    const defaultTopic = topics.find((topic) => topic.id === '0')
                     dispatch(newChatTopic({
                         chatType: currentChatType,
                         topic: {
                             id: newId,
                             topic: 'New Topic',
-                            chats: []
+                            chats: [],
+                            useModel: defaultTopic?.useModel,
                         }
                     }))
                     setCurrentTopicId(newId)

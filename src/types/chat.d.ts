@@ -6,7 +6,7 @@ export interface MessageData {
     id: string
     created?: number
     messageType: "question" | "answer"
-    content?: string
+    content: string
     role?: string
     object?: string;
     model?: string;

@@ -34,19 +34,33 @@ const siteRoutes: ISiteRoute = {
             hideInMenu: false,
         },
         {
-            name: "GPTChat",
-            icon: <MessageOutlined />,
+            name: "Chat",
+            icon: <FilePdfFilled />,
             locale: "menu.Chat",
-            path: "/chat",
+            path: "/gpt/chat",
             hideInMenu: false,
         },
         {
-            name: "PDFChat",
-            icon: <FilePdfFilled />,
-            locale: "menu.Chat",
-            path: "/pdfchat",
+            name: "Q&A",
+            icon: <MessageOutlined />,
+            locale: "menu.q&a",
+            path: "/gpt/q&a",
             hideInMenu: false,
-        }
+        },
+        {
+            name: "Code",
+            icon: <FilePdfFilled />,
+            locale: "menu.Code",
+            path: "/gpt/code",
+            hideInMenu: false,
+        },
+        {
+            name: "Translation",
+            icon: <FilePdfFilled />,
+            locale: "menu.Translation",
+            path: "/gpt/translation",
+            hideInMenu: false,
+        },
     ],
 };
 

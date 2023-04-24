@@ -12,7 +12,7 @@ import { v4 as uuid4 } from 'uuid'
 const { TextArea } = Input;
 
 
-export const ChatSendBtn = () => {
+export const ChatPromptBtn = ({ setLoading }: { setLoading: any }) => {
     const { notification } = App.useApp();
 
     const { apiKey } = useCurrentConfig()
@@ -30,7 +30,7 @@ export const ChatSendBtn = () => {
 
     const [createCompletion, { isError, isLoading, isSuccess, data, error }] = useCreateCompletionMutation()
 
-    const sendQuestion = () => {
+    const sendPrompt = () => {
         if (question === '') return
         // messageData.push({ text: question, self: true, animate: true })
         setQuestion('')
@@ -55,6 +55,11 @@ export const ChatSendBtn = () => {
             // stop: '\n',
         })
     }
+
+    useEffect(() => {
+        setLoading(isLoading)
+    }, [isLoading])
+
 
     useEffect(() => {
         if (isSuccess && data) {
@@ -107,13 +112,12 @@ export const ChatSendBtn = () => {
                         maxLength={1000}
                         value={question}
                         autoSize={{ minRows: 2, maxRows: 10 }}
-                        // onKeyUp={onEnterSendQuestion}
                         onChange={(e) => {
                             setQuestion(e.target.value)
                         }}
                         onKeyUp={(e) => {
                             if (e.key === 'Enter' && e.shiftKey) {
-                                sendQuestion()
+                                sendPrompt()
                             }
                         }
                         }
@@ -126,7 +130,7 @@ export const ChatSendBtn = () => {
                 <Button
                     loading={isLoading}
                     disabled={question === ''}
-                    onClick={sendQuestion}
+                    onClick={sendPrompt}
                 >Send</Button>
             </Col>
         </>
